@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en" class="">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>SafarGo — Book Bus Tickets Across India</title>
+    <meta name="description" content="SafarGo lets you search trusted bus operators across India, compare fares and amenities, pick your seat and book instantly with UPI, cards or net banking." />
+    <meta property="og:title" content="SafarGo — Bus tickets across India" />
+    <meta property="og:description" content="Search 2,000+ routes, live seat maps and instant refunds. Demo product for the Indian bus-booking market." />
+    <meta property="og:type" content="website" />
+    <meta name="theme-color" content="#1668e0" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0d1424" media="(prefers-color-scheme: dark)" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <script>
+      // Apply persisted theme before first paint to avoid a flash of the wrong theme.
+      try {
+        var t = localStorage.getItem('safargo-theme') || 'system';
+        var dark = t === 'dark' || (t === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+        if (dark) document.documentElement.classList.add('dark');
+        var rm = localStorage.getItem('safargo-reduced-motion') === '1';
+        if (rm) document.documentElement.classList.add('reduce-motion');
+        var hc = localStorage.getItem('safargo-high-contrast') === '1';
+        if (hc) document.documentElement.classList.add('high-contrast');
+      } catch (e) {}
+    </script>
+  </head>
+  <body class="bg-surface-light text-slate-800 antialiased dark:bg-surface-dark dark:text-slate-100">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

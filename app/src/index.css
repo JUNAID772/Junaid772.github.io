@@ -1,0 +1,48 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html { scroll-behavior: smooth; }
+  html.reduce-motion *, html.reduce-motion *::before, html.reduce-motion *::after {
+    animation-duration: 0.001ms !important; transition-duration: 0.001ms !important;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+  }
+  html.high-contrast { --tw-prose-body: #000; }
+  html.high-contrast.dark { color-scheme: dark; }
+  :focus-visible { outline: 2px solid theme(colors.brand.500); outline-offset: 2px; border-radius: 4px; }
+}
+
+@layer components {
+  .btn { @apply inline-flex items-center justify-center gap-2 rounded-xl font-semibold transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed select-none; }
+  .btn-primary { @apply btn bg-brand-600 text-white hover:bg-brand-700 active:scale-[.98] shadow-sm hover:shadow px-4 py-2.5 text-sm; }
+  .btn-accent { @apply btn bg-accent-500 text-white hover:bg-accent-600 active:scale-[.98] px-4 py-2.5 text-sm; }
+  .btn-outline { @apply btn border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 px-4 py-2.5 text-sm; }
+  .btn-ghost { @apply btn text-brand-700 dark:text-brand-300 hover:bg-brand-50 dark:hover:bg-slate-800 px-3 py-2 text-sm; }
+  .btn-lg { @apply px-6 py-3.5 text-base rounded-2xl; }
+  .input { @apply w-full rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 px-3.5 py-2.5 text-sm placeholder:text-slate-400 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30 outline-none transition; }
+  .label { @apply block text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400 mb-1.5; }
+  .card { @apply rounded-2xl bg-white dark:bg-surface-cardDark border border-slate-200/80 dark:border-slate-700/60 shadow-card; }
+  .chip { @apply inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-medium; }
+  .badge-green { @apply chip bg-emerald-50 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300; }
+  .badge-blue { @apply chip bg-brand-50 text-brand-700 dark:bg-brand-900/40 dark:text-brand-300; }
+  .badge-amber { @apply chip bg-amber-50 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300; }
+  .badge-red { @apply chip bg-rose-50 text-rose-700 dark:bg-rose-900/40 dark:text-rose-300; }
+  .badge-slate { @apply chip bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300; }
+  .skeleton { @apply animate-pulse rounded-xl bg-slate-200/80 dark:bg-slate-700/60; }
+  .link { @apply text-brand-600 dark:text-brand-400 hover:underline underline-offset-2; }
+}
+
+/* Seat map */
+.seat { width: 44px; height: 44px; border-radius: 10px; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; transition: all .15s ease; cursor: pointer; border: 2px solid transparent; }
+.seat-available { background: #ecfdf5; color: #047857; border-color: #a7f3d0; }
+.dark .seat-available { background: #064e3b33; color: #6ee7b7; border-color: #065f46; }
+.seat-selected { background: #1668e0 !important; color: #fff !important; border-color: #1252b8 !important; transform: scale(1.05); }
+.seat-booked { background: #fee2e2; color: #b91c1c; border-color: #fecaca; cursor: not-allowed; opacity: .8; }
+.dark .seat-booked { background: #7f1d1d33; color: #fca5a5; border-color: #7f1d1d; }
+.seat-ladies { background: #fdf2f8; color: #be185d; border-color: #fbcfe8; }
+.dark .seat-ladies { background: #83184333; color: #f9a8d4; border-color: #831843; }
+.seat-held { background: #fef3c7; color: #b45309; border-color: #fde68a; cursor: not-allowed; }
+.seat-aisle { width: 26px; height: 44px; }
