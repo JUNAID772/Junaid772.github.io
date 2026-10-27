@@ -103,7 +103,7 @@ export function seed() {
   for (const o of OPERATORS) {
     insOp.run(o[0], o[1], o[2], o[3], o[4], o[5],
       'Post-departure cancellations not allowed. Refund % depends on time left before departure; see policy card.',
-      `support@${o[0].toLowerCase().replace(/\W+/g, '')}.example`)
+      `support@${String(o[0]).toLowerCase().replace(/\W+/g, '')}.example`)
   }
 
   const insRoute = db.prepare('INSERT INTO routes (source_city_id,dest_city_id,distance_km,base_duration_min,popular) VALUES (?,?,?,?,?)')

@@ -1,0 +1,9 @@
+{
+  "name": "SafarGo — Bus Tickets India",
+  "short_name": "SafarGo",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f7f9fc",
+  "theme_color": "#1668e0",
+  "icons": [{ "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" }]
+}

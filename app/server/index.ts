@@ -149,7 +149,7 @@ app.get('/api/schedules/:id', (req, res) => {
   const stops = db.prepare(`SELECT st.* FROM stops st JOIN schedule_stops ss ON ss.stop_id=st.id WHERE ss.schedule_id=? ORDER BY st.kind, st.seq`).all(s.id)
   const reviews = db.prepare(`SELECT rv.rating, rv.comment, rv.created_at, u.name user_name FROM reviews rv JOIN users u ON u.id=rv.user_id
     WHERE rv.schedule_id IN (SELECT id FROM schedules WHERE route_id=? AND bus_id=?) ORDER BY rv.created_at DESC LIMIT 6`).all(s.route_id, s.bus_id)
-  res.json({ demo: true, schedule: s, seats, stops, reviews })
+  res.json({ demo: true, schedule: s, seats, stops, reviews, ...s })
 })
 
 // ---- Seat holds ---------------------------------------------------------------
@@ -221,7 +221,7 @@ app.post('/api/auth/register', rl(10, 60_000), (req, res) => {
   const r = db.prepare('INSERT INTO users (name,email,phone,password_hash) VALUES (?,?,?,?)').run(String(name).trim(), email.toLowerCase(), ph, hashPassword(password))
   const token = createSession(Number(r.lastInsertRowid))
   setSessionCookie(res, token)
-  audit(Number(r.lastInsertRowid), 'user_registered', 'users', r.lastInsertRowid, '', req.ip)
+  audit(Number(r.lastInsertRowid), 'user_registered', 'users', Number(r.lastInsertRowid), '', req.ip)
   res.json({ ok: true, user: getSessionUser(token.split('.')[0] ? undefined : undefined) || publicUser(Number(r.lastInsertRowid)) })
 })
 function publicUser(id: number) {
@@ -511,9 +511,9 @@ app.post('/api/bookings/:id/cancel', auth, rl(10, 60_000), (req, res) => {
     freeBookingSeats(b.booking.id)
     if (payment && refundable > 0) {
       const utr = `UTR${Date.now().toString().slice(-10)}`
-      db.prepare(`UPDATE payments SET status='refunded' WHERE id=?`).run(payment.id)
+      db.prepare(`UPDATE payments SET status='refunded' WHERE id=?`).run((payment as any).id)
       db.prepare('INSERT INTO refunds (booking_id,payment_id,amount_paise,status,utr,policy_snapshot) VALUES (?,?,?,?,?,?)')
-        .run(b.booking.id, payment.id, refundable, 'success', utr, pol.label)
+        .run((b.booking as any).id, (payment as any).id, refundable, 'success', utr, pol.label)
     }
   })()
   notifyUser(req.user.id, 'refund_update', 'Cancellation processed',
@@ -722,7 +722,7 @@ app.post('/api/admin/operators', auth, requireRole('admin'), (req, res) => {
   if (!name) return res.status(400).json({ error: 'Operator name required' })
   const r = db.prepare('INSERT INTO operators (name,verified,women_friendly,live_tracking,cancellation_policy) VALUES (?,?,?,?,?)')
     .run(String(name), verified ? 1 : 0, womenFriendly ? 1 : 0, liveTracking ? 1 : 0, 'Standard tiered refund policy.')
-  audit(req.user.id, 'operator_created', 'operators', r.lastInsertRowid, name, req.ip)
+  audit(req.user.id, 'operator_created', 'operators', Number(r.lastInsertRowid), name, req.ip)
   res.json({ id: Number(r.lastInsertRowid) })
 })
 app.patch('/api/admin/operators/:id', auth, requireRole('admin'), (req, res) => {

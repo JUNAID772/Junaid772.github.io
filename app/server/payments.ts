@@ -67,8 +67,8 @@ class DemoPaymentAdapter implements PaymentAdapter {
 class UnconfiguredRazorpayAdapter implements PaymentAdapter {
   name = 'razorpay'
   sandbox = true
-  createOrder() { throw new Error('RAZORPAY_KEY_ID/SECRET not configured. Set PAY_PROVIDER=demo or add real keys.') }
-  verifyAndCapture() { throw new Error('RAZORPAY provider not configured.') }
+  createOrder(): never { throw new Error('RAZORPAY_KEY_ID/SECRET not configured. Set PAY_PROVIDER=demo or add real keys.') }
+  verifyAndCapture(): never { throw new Error('RAZORPAY provider not configured.') }
 }
 
 export const payProvider: PaymentAdapter =
